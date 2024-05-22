@@ -43,7 +43,7 @@ rm $BACKUP_NAME
 if [ $? -ne 0 ]; then
     log "Error: Failed to delete $BACKUP_NAME."
 else
-    log "Success: Local backup $BACKUP_NAME has been deleted."
+    log "Success: Local $BACKUP_NAME has been deleted."
 fi
 
 exit 0
