@@ -5,7 +5,7 @@ BACKUP_NAME="backup_$(date +%Y%m%d_%H%M%S).zip"
 REMOTE_USER=$2 # targer server username 
 REMOTE_HOST=$3 # target ip server
 IDENTITY_KEY=$4 # path to public key
-TARGET_PATH="~/backup/$BACKUP_NAME"
+TARGET_PATH="~/backup"
 LOG_FILE="/var/log/backup_script.log" # local path to log file
 
 log() {
@@ -28,9 +28,11 @@ else
     log "Success: Created $BACKUP_NAME."
 fi
 
+# create target folder for backup
+ssh -i $IDENTITY_KEY $REMOTE_USER@$REMOTE_HOST "mkdir -p $TARGET_PATH" 
 # send backup to target server
-rsync -avz --delete -e "ssh -i $IDENTITY_KEY" $BACKUP_NAME $REMOTE_USER@$REMOTE_HOST:$TARGET_PATH
-# scp -r -i $IDENTITY_KEY $BACKUP_NAME $REMOTE_USER@$REMOTE_HOST:$TARGET_PATH
+rsync -avz --delete -e "ssh -i $IDENTITY_KEY" $BACKUP_NAME $REMOTE_USER@$REMOTE_HOST:$TARGET_PATH/$BACKUP_NAME
+
 if [ $? -ne 0 ]; then
     log "Error: Failed to send backup folder to the target server."
     exit 1
