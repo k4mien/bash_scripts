@@ -1,1 +1,1 @@
-repository for practice bash scripting
+useful bash scripts
